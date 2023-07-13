@@ -1,0 +1,138 @@
+family:
+  id: FamilyID
+  proband:
+    subject:
+      id: SampleID
+      sex: FEMALE
+    phenotypicFeatures:
+      - type:
+          id: HP:0011760
+          label: Pituitary growth hormone cell adenoma
+      - type:
+          id: HP:0000845
+          label:  Elevated circulating growth hormone concentration
+  pedigree:
+    persons:
+      - individualId: SampleID
+        paternalId: PaternalID
+        maternalId: MaternalID
+        sex: FEMALE    
+        affectedStatus: AFFECTED  
+      - individualId: PaternalID
+        sex: MALE    
+        affectedStatus: UNAFFECTED
+      - individualId: MaternalID
+        sex: FEMALE    
+        affectedStatus: UNAFFECTED
+  htsFiles:
+    - uri: /data/home/hhz060/VCFs/F20_VCF.vcf
+      htsFormat: VCF
+      genomeAssembly: hg19
+  metaData:
+    created: '2023-07-05T14:04:21+0100Z'
+    createdBy: AmyEvans
+    resources:
+      - id: hp
+        name: human phenotype ontology
+        url: http://purl.obolibrary.org/obo/hp.owl
+        version: hp/releases/2019-11-08
+        namespacePrefix: HP
+        iriPrefix: 'http://purl.obolibrary.org/obo/HP_'
+    phenopacketSchemaVersion: 1.0
+analysis:
+  #FULL or PASS_ONLY
+  analysisMode: PASS_ONLY
+
+  inheritanceModes: {
+    AUTOSOMAL_DOMINANT: 0.1,
+    # AUTOSOMAL_RECESSIVE_COMP_HET: 2.0,
+    # AUTOSOMAL_RECESSIVE_HOM_ALT: 0.1,
+    # X_DOMINANT: 0.1,
+    # X_RECESSIVE_COMP_HET: 2.0,
+    # X_RECESSIVE_HOM_ALT: 0.1,
+    # MITOCHONDRIAL: 0.2
+  }
+
+  frequencySources: [
+    THOUSAND_GENOMES,
+            TOPMED,
+            UK10K,
+            ESP_AFRICAN_AMERICAN, ESP_EUROPEAN_AMERICAN, ESP_ALL,
+            EXAC_AFRICAN_INC_AFRICAN_AMERICAN, EXAC_AMERICAN,
+            EXAC_SOUTH_ASIAN, EXAC_EAST_ASIAN,
+            EXAC_FINNISH, EXAC_NON_FINNISH_EUROPEAN,
+            EXAC_OTHER,
+            GNOMAD_E_AFR,
+            GNOMAD_E_AMR,
+    #        GNOMAD_E_ASJ,
+            GNOMAD_E_EAS,
+            GNOMAD_E_FIN,
+            GNOMAD_E_NFE,
+            GNOMAD_E_OTH,
+            GNOMAD_E_SAS,
+            GNOMAD_G_AFR,
+            GNOMAD_G_AMR,
+    #        GNOMAD_G_ASJ,
+            GNOMAD_G_EAS,
+            GNOMAD_G_FIN,
+            GNOMAD_G_NFE,
+            GNOMAD_G_OTH,
+            GNOMAD_G_SAS
+
+  ]
+
+  # Possible pathogenicitySources: (POLYPHEN, MUTATION_TASTER, SIFT), (REVEL, MVP), CADD, REMM
+  pathogenicitySources: [ REVEL, MVP ]
+
+  #all steps are optional
+  steps: [
+    #hiPhivePrioritiser: {},
+    #priorityScoreFilter: {priorityType: HIPHIVE_PRIORITY, minPriorityScore: 0.500},
+    #intervalFilter: {interval: 'chr10:123256200-123256300'},
+    #genePanelFilter: {geneSymbols: ['FGFR1','FGFR2']},
+      failedVariantFilter: { },
+    #qualityFilter: {minQuality: 50.0},
+      variantEffectFilter: {
+        remove: [
+            FIVE_PRIME_UTR_EXON_VARIANT,
+            FIVE_PRIME_UTR_INTRON_VARIANT,
+            THREE_PRIME_UTR_EXON_VARIANT,
+            THREE_PRIME_UTR_INTRON_VARIANT,
+            NON_CODING_TRANSCRIPT_EXON_VARIANT,
+            UPSTREAM_GENE_VARIANT,
+            INTERGENIC_VARIANT,
+            REGULATORY_REGION_VARIANT,
+            CODING_TRANSCRIPT_INTRON_VARIANT,
+            NON_CODING_TRANSCRIPT_INTRON_VARIANT,
+            DOWNSTREAM_GENE_VARIANT
+      ]
+    },
+    # removes variants represented in the database
+    #knownVariantFilter: {},
+    frequencyFilter: {maxFrequency: 2.0},
+    pathogenicityFilter: {keepNonPathogenic: true},
+    # inheritanceFilter and omimPrioritiser should always run AFTER all other filters have completed
+    # they will analyse genes according to the specified modeOfInheritance above- UNDEFINED will not be analysed.
+    inheritanceFilter: {},
+    # omimPrioritiser isn't mandatory.
+    omimPrioritiser: {},
+    #priorityScoreFilter: {minPriorityScore: 0.4},
+    # Other prioritisers: Only combine omimPrioritiser with one of these.
+    # Don't include any if you only want to filter the variants.
+    hiPhivePrioritiser: {},
+    # or run hiPhive in benchmarking mode:
+    #hiPhivePrioritiser: {runParams: 'mouse'},
+    #phivePrioritiser: {}
+    #phenixPrioritiser: {}
+    #exomeWalkerPrioritiser: {seedGeneIds: [11111, 22222, 33333]}
+  ]
+# OUTPUT OPTIONS
+outputOptions:
+  outputContributingVariantsOnly: false
+  #numGenes options: 0 = all or specify a limit e.g. 500 for the first 500 results
+  numGenes: 0
+  #outputPrefix options: specify the path/filename without an extension and this will be added
+  outputPrefix: /Output/Directory/
+  #out-format options: HTML, JSON, TSV_GENE, TSV_VARIANT, VCF (default: HTML)
+  outputFormats: [HTML, JSON, TSV_GENE, TSV_VARIANT, VCF]
+  
