@@ -25,7 +25,7 @@ family:
         sex: FEMALE    
         affectedStatus: UNAFFECTED
   htsFiles:
-    - uri: /data/home/hhz060/VCFs/F20_VCF.vcf
+    - uri: /location/of/vcf.vcf
       htsFormat: VCF
       genomeAssembly: hg19
   metaData:
